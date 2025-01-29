@@ -3,10 +3,20 @@
     "target": "es2020",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./", // Keep this as './' if your TypeScript files are at the root
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "sourceMap": false, // Consider setting to true for development environments
+    "noImplicitReturns": true
   },
+  "include": [
+    "**/*.ts" // Includes all TypeScript files in your project root and subdirectories
+  ],
+  "exclude": [
+    "node_modules",
+    "dist" // Excludes the dist directory to avoid recompiling already compiled files
+  ]
 }

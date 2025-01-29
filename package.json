@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
+    "prisma": "prisma generate",
+    "build": "npm run clean && tsc && npm run prisma",
+    "prestart": "npm run build",
     "start": "node dist/server.js",
     "dev": "npx nodemon server.ts",
-    "build": "tsc && mv dist public",
-    "prestart": "npm run build"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "keywords": [],
   "author": "",
