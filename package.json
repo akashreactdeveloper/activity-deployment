@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/server.js",
     "dev": "npx nodemon server.ts",
-    "build": "tsc && mkdir -p public",
+    "build": "tsc && mv dist public",
     "prestart": "npm run build"
   },
   "keywords": [],
