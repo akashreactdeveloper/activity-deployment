@@ -7,7 +7,7 @@ import cors from 'cors';
 
 const app = express();
 const prisma = new PrismaClient();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Use environment port if available
 
 // Use CORS middleware first
 app.use(cors({
@@ -20,6 +20,11 @@ app.use(cors({
 
 // Then, use JSON parser
 app.use(express.json());
+
+// Add a simple root route
+app.get('/', (req, res) => {
+    res.status(200).send('Welcome to My Express App!');
+});
 
 // After setting up CORS, add your routes
 app.use(UserSessionHandling);
