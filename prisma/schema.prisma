@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model LoginSession {
+  id          Int    @id @default(autoincrement())
+  user_id      Int    @map("user_id")
+  access_token String
+  expires_in   Int    // Access token expiration time
+
+  @@index([user_id])
+  @@index([access_token])
+}
+
+model attemptSession {
+  id          Int    @id @default(autoincrement())
+  assessmentId      Int    @map("assessmentId")
+  courseInstanceId String
+  studentId   Int    // Access token expiration time
+
+  @@index([assessmentId])
+  @@index([studentId])
+}
+
+model submitSession {
+  id             Int      @id @default(autoincrement())
+  studentId      Int
+  courseId       Int
+  assessmentId   Int
+  attemptId      Int
+  questionId     Int
+  answers        String
+  isAnswerCorrect Boolean
+  createdAt      DateTime @default(now())
+
+  @@index([studentId])
+  @@index([assessmentId])
+}
+
+// Define the Prisma schema model for the progress of courses, modules, and items
+
+model ProgressMap {
+  id               Int      @id @default(autoincrement())
+  courseInstanceId String
+  studentIds       String[]
+  modules          Module[]
+  isCompleted      Boolean  @default(false) // Tracks completion of the entire course
+}
+
+model Module {
+  id             Int      @id @default(autoincrement())
+  progressMap    ProgressMap @relation(fields: [progressMapId], references: [id])
+  progressMapId  Int
+  moduleId       String
+  sequence       Int
+  sections       Section[]
+  isCompleted    Boolean  @default(false) // Tracks completion of the module
+}
+
+model Section {
+  id            Int      @id @default(autoincrement())
+  module        Module   @relation(fields: [moduleId], references: [id])
+  moduleId      Int
+  sectionId     String
+  sequence      Int
+  sectionItems  SectionItem[]
+  isCompleted   Boolean  @default(false) // Tracks completion of the section
+}
+
+model SectionItem {
+  id            Int     @id @default(autoincrement())
+  section       Section @relation(fields: [sectionId], references: [id])
+  sectionId     Int
+  sectionItemId String
+  sequence      Int
+  isCompleted   Boolean @default(false) // Tracks completion of the section item
+}
+
+
+
